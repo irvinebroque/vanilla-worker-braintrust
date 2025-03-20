@@ -7,6 +7,7 @@
 	"name": "vanilla-worker-braintrust",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-03-19",
+	"compatibility_flags": ["nodejs_compat"],
 	"observability": {
 		"enabled": true
 	}

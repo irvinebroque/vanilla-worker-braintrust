@@ -15,5 +15,10 @@
 		"typescript": "^5.5.2",
 		"vitest": "~3.0.7",
 		"wrangler": "^4.2.0"
+	},
+	"dependencies": {
+		"@ai-sdk/openai": "^1.2.6",
+		"ai": "^4.1.63",
+		"braintrust": "^0.0.191"
 	}
 }
