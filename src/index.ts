@@ -14,13 +14,17 @@ export default {
 			asyncFlush: false,
 		  });
 
-          const openai = wrapOpenAI(createOpenAI({
+		  const openai = createOpenAI({
             apiKey: env.OPENAI_API_KEY,
-          }));
+          });
+
+		  console.log(openai.chat.completions);
+
+          const wrappedOpenai = wrapOpenAI(openai);
 
           // Stream the AI response using GPT-4
           const result = streamText({
-            model: openai("gpt-4o-2024-11-20"),
+            model: wrappedOpenai("gpt-4o-2024-11-20"),
             system: `You are a helpful assistant that can do various tasks...`,
             messages: [
 				{
@@ -31,7 +35,7 @@ export default {
             maxSteps: 10,
           });
 
-		  console.log(result);
+		  // console.log(result);
 
 		return new Response('Hello World!');
 	},
