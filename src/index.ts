@@ -1,38 +1,37 @@
-import { initLogger, wrapOpenAI, wrapTraced } from "braintrust";
+import { initLogger, wrapOpenAI } from "braintrust";
+import OpenAI from "openai";
 
-import {
-  streamText,
-} from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-
 		const logger = initLogger({
-			projectName: "My Project",
+			projectName: "Cloudflare",
 			apiKey: env.BRAINTRUST_API_KEY,
 			asyncFlush: false,
-		  });
+		});
 
-          const openai = wrapOpenAI(createOpenAI({
-            apiKey: env.OPENAI_API_KEY,
-          }));
+		const openaiClient = wrapOpenAI(new OpenAI({
+			apiKey: env.OPENAI_API_KEY,
+		}));
 
-          // Stream the AI response using GPT-4
-          const result = streamText({
-            model: openai("gpt-4o-2024-11-20"),
-            system: `You are a helpful assistant that can do various tasks...`,
-            messages: [
+		const stream = await openaiClient.chat.completions.create({
+			model: 'gpt-4o-2024-11-20',
+			messages: [
+				{
+					role: 'system',
+					content: 'You are a helpful assistant that can do various tasks...',
+				},
 				{
 					role: 'user',
-					content: 'foo'
-				}
+					content: 'foo',
+				},
 			],
-            maxSteps: 10,
-          });
+			stream: true,
+		});
 
-		  console.log(result);
-
-		return new Response('Hello World!');
+		// Return the streamed response
+		return new Response(stream.toReadableStream(), {
+			headers: { 'Content-Type': 'text/plain' },
+		});
 	},
 } satisfies ExportedHandler<Env>;
