@@ -18,8 +18,8 @@
 	},
 	"dependencies": {
 		"@ai-sdk/openai": "^1.2.6",
-		"ai": "^4.1.63",
-		"braintrust": "^0.0.191",
+		"ai": "^5.0.89",
+		"braintrust": "^0.4.9",
 		"openai": "^4.88.0"
 	}
 }
